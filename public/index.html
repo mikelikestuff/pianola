@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Motor Control</h1>
+<p><input type="checkbox" id="light"></p>
+
+<button onclick="stop()">Stop</button>
+<button onclick="forwards()">Forwards</button>
+<button onclick="reverse()">Reverse</button>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> <!-- include socket.io client side script -->
+<script>
+
+// Pressing the "zero" Button
+function forwards() {
+  document.getElementById("light").checked = true;
+  var lightbox = document.getElementById("light");
+  socket.emit ("light",2);
+}
+
+// Pressing the "one" Button
+function reverse() {
+  document.getElementById("light").checked = false;
+  var lightbox = document.getElementById("light");
+  socket.emit ("light",1);
+}
+// Pressing the "two" Button
+function stop() {
+  document.getElementById("light").checked = true;
+  var lightbox = document.getElementById("light");
+  socket.emit ("light",0);
+}
+
+// Pressing the "three" Button
+function go() {
+  document.getElementById("light").checked = false;
+  var lightbox = document.getElementById("light");
+  socket.emit ("light",3);
+}
+
+
+var socket = io(); //load socket.io-client and connect to the host that serves the page
+window.addEventListener("mousedown", function(){ //when mouse clicked on element
+  var lightbox = document.getElementById("light");
+  lightbox.addEventListener("change", function() { //add event listener for when checkbox changes
+    socket.emit("light", Number(this.checked)); //send button status to server (as 1 or 0)
+  });
+});
+
+
+
+
+
+socket.on('light', function (data) { //get button status from client
+  document.getElementById("light").checked = data; //change checkbox according to push button on Raspberry Pi
+  socket.emit("light", data); //send push button status to back to server
+});
+</script>
+
+</body>
+</html>
