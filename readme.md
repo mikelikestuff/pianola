@@ -1,3 +1,4 @@
-# Pianola
+# Pianola-tron-3000
 
-Hello dad!
+Automatic machine for playing pianola rolls in real time.
+
